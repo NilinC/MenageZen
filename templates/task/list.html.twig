@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block tasks %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Pièce</th>
+            <th scope="col">Tâche</th>
+            <th scope="col">Dernière complétion</th>
+            <th scope="col">Utilisateur</th>
+            <th scope="col">Fréquence</th>
+            <th scope="col">Difficulté</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <th scope="row">{{ task.room.name }}</th>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.lastDone }}</td>
+                    <td>{{ task.lastDoneBy }}</td>
+                    <td>{{ task.frequency }}</td>
+                    <td>
+                        {{ task.difficulty }}
+                    </td>
+                </tr>
+            {%endfor %}
+        </tbody>
+    </table>
+{% endblock %}
