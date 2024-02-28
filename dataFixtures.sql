@@ -1,15 +1,15 @@
-INSERT INTO room VALUES
-    (1, 'Chambre'),
-    (2, 'Salon'),
-    (3, 'Cuisine'),
-    (4, 'Entrée'),
-    (5, 'Salle de bains')
+INSERT INTO room (name) VALUES
+    ('Chambre'),
+    ('Salon'),
+    ('Cuisine'),
+    ('Entrée'),
+    ('Salle de bains')
 ;
 
-INSERT INTO user VALUES
-    (1, 'Aliette', null),
-    (2, 'Joey', null),
-    (3, 'Beline', null)
+INSERT INTO user (username) VALUES
+    ('Aliette'),
+    ('Joey'),
+    ('Beline')
 ;
 
 INSERT INTO task (room_id, last_done_by_id, name, frequency, difficulty, last_done) VALUES
