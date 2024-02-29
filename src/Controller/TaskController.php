@@ -7,8 +7,6 @@ use App\Entity\User;
 use App\Form\Type\TaskType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -45,26 +43,32 @@ class TaskController extends AbstractController
         );
     }
 
-    #[Route('/add', name: 'add_task', methods: [ "GET", "POST" ])]
-    public function add(Request $request): Response
-    {
-        $form = $this->createForm(TaskType::class);
-        $this->handleForm($request, $form, new Task());
-
-        return $this->render(
-            'task/form.html.twig',
-            [ 'form' => $form ]
-        );
-    }
-
-    #[Route('/update/?task_id', name: 'update_task', methods: [ "GET", "PUT" ])]
-    public function update (Request $request): Response
+    #[Route('/update/?task_id', name: 'update_task', methods: [ "GET", "POST" ])]
+    public function update(Request $request): Response
     {
         $taskId = $request->query->get('task_id');
-        $task = $this->entityManager->getRepository(Task::class)->findOneBy([ 'id' => $taskId ]);
+        if ($taskId) {
+            $task = $this->entityManager->getRepository(Task::class)->findOneBy([ 'id' => $taskId ]);
+        } else {
+            $task = new Task();
+        }
 
         $form = $this->createForm(TaskType::class, $task);
-        $this->handleForm($request, $form, $task);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+            $user = $task->getLastDoneBy();
+            if ($user) {
+                $user->setPoints($task->getDifficulty());
+                $this->entityManager->persist($user);
+            }
+
+            $this->entityManager->persist($task);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('homepage');
+        }
 
         return $this->render(
             'task/form.html.twig',
@@ -81,22 +85,5 @@ class TaskController extends AbstractController
         $this->entityManager->flush();
 
         return $this->redirectToRoute('homepage');
-    }
-
-    private function handleForm(Request $request, FormInterface $form, ?Task $task): void
-    {
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
-            $user = $task->getLastDoneBy();
-            if ($user) {
-                $user->setPoints($task->getDifficulty());
-                $this->entityManager->persist($user);
-            }
-
-            $this->entityManager->persist($task);
-            $this->entityManager->flush();
-        }
     }
 }
