@@ -58,6 +58,8 @@ class TaskController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $task = $form->getData();
+            $task->calculateNextDone();
+
             $user = $task->getLastDoneBy();
             if ($user) {
                 $user->setPoints($task->getDifficulty());
@@ -76,7 +78,7 @@ class TaskController extends AbstractController
         );
     }
 
-    #[Route('/remove/?task_id', 'remove_task', methods: [ "DELETE" ])]
+    #[Route('/remove/?task_id', 'remove_task', methods: [ "GET", "DELETE" ])]
     public function remove(Request $request): Response
     {
         $task = $this->entityManager->getRepository(Task::class)->findOneBy([ 'id' => $request->query->get('task_id') ]);
@@ -85,5 +87,11 @@ class TaskController extends AbstractController
         $this->entityManager->flush();
 
         return $this->redirectToRoute('homepage');
+    }
+
+    #[Route('/schedule', 'chores_schedule', methods: [ "GET" ])]
+    public function schedule(): Response
+    {
+        return $this->render('task/schedule.html.twig');
     }
 }

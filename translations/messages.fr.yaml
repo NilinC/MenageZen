@@ -1,0 +1,21 @@
+menu:
+  room:
+    bedroom: Chambre
+    living_room: Salon
+    kitchen: Cuisine
+    entrance: Entrée
+    bathroom: Salle de bains
+  schedule: Planning
+  add_task: Ajouter une tâche
+
+list:
+  head:
+    room: Pièce
+    name: Tâche
+    last_done: Dernière complétion
+    last_done_by: Utilisateur
+    frequency: Fréquence
+    difficulty: Difficulté
+
+form:
+  save: Sauvegarder

@@ -21,23 +21,26 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 1 }) }}">Chambre</a>
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 1 }) }}">{{ "menu.room.bedroom" | trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 2 }) }}">Salon</a>
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 2 }) }}">{{ "menu.room.living_room" | trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 3 }) }}#">Cuisine</a>
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 3 }) }}#">{{ "menu.room.kitchen" | trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 4 }) }}">Entrée</a>
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 4 }) }}">{{ "menu.room.entrance" | trans }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 5 }) }}">Salle de bains</a>
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 5 }) }}">{{ "menu.room.bathroom" | trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('chores_schedule') }}">{{ "menu.schedule" | trans }}</a>
                             </li>
                         </ul>
 
-                        <a class="btn btn-outline-success" type="button" href="{{ path('update_task') }}">Ajouter une tâche</a>
+                        <a class="btn btn-outline-success" type="button" href="{{ path('update_task') }}">{{ "menu.add_task" | trans }}</a>
                     </div>
                 </div>
             </nav>
@@ -53,5 +56,6 @@
         {% endblock %}
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js" integrity="sha256-dHUNnePy81fXq4D/wfu7cPsEIP7zl6MvLb84jtZf+UY=" crossorigin="anonymous"></script>
     </body>
 </html>

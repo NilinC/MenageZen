@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TaskRepository;
+use DateInterval;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,14 +22,20 @@ class Task
     #[ORM\JoinColumn(nullable: false)]
     private Room $room;
 
-    #[ORM\Column(length: 255)]
-    private string $frequency;
+    #[ORM\Column]
+    private int $duration;
+
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    private Frequency $frequency;
 
     #[ORM\Column]
     private int $difficulty;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $lastDone = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private \DateTimeInterface $nextDone;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     private ?User $lastDoneBy = null;
@@ -69,12 +76,24 @@ class Task
         return $this;
     }
 
-    public function getFrequency(): string
+    public function getDuration(): int
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(int $duration): static
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getFrequency(): Frequency
     {
         return $this->frequency;
     }
 
-    public function setFrequency(string $frequency): static
+    public function setFrequency(Frequency $frequency): static
     {
         $this->frequency = $frequency;
 
@@ -103,6 +122,25 @@ class Task
         $this->lastDone = $lastDone;
 
         return $this;
+    }
+
+    public function getNextDone(): \DateTimeInterface
+    {
+        return $this->nextDone;
+    }
+
+    public function setNextDone(?\DateTimeInterface $nextDone): static
+    {
+        $this->nextDone = $nextDone;
+
+        return $this;
+    }
+
+    public function calculateNextDone(): void
+    {
+        $interval = DateInterval::createFromDateString($this->getDuration() . ' ' . $this->getFrequency()->getName());
+        $date = new \DateTimeImmutable($this->getLastDone()->format('Y-m-d'));
+        $this->setNextDone($date->add($interval));
     }
 
     public function getLastDoneBy(): ?User
