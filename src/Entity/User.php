@@ -16,10 +16,10 @@ class User
     private int $id;
 
     #[ORM\Column(length: 255)]
-    private string $name;
+    private string $username;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $points = null;
+    #[ORM\Column]
+    private int $points;
 
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'lastDoneBy')]
     private Collection $tasks;
@@ -41,26 +41,26 @@ class User
         return $this;
     }
 
-    public function getName(): string
+    public function getUsername(): string
     {
-        return $this->name;
+        return $this->username;
     }
 
-    public function setName(string $name): static
+    public function setUsername(string $username): static
     {
-        $this->name = $name;
+        $this->username = $username;
 
         return $this;
     }
 
-    public function getPoints(): ?int
+    public function getPoints(): int
     {
         return $this->points;
     }
 
-    public function setPoints(?int $points): static
+    public function setPoints(int $points): static
     {
-        $this->points = $points;
+        $this->points += $points;
 
         return $this;
     }

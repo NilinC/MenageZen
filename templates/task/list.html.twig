@@ -1,30 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block tasks %}
+{% block content %}
+    <div class="container text-center">
+        <div class="row">
+            {% for user in users %}
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ user.username }}
+                        </div>
+                        <div class="card-body">
+                            {{ user.points }} points
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <table class="table">
         <thead>
         <tr>
+            <th></th>
             <th scope="col">Pièce</th>
             <th scope="col">Tâche</th>
             <th scope="col">Dernière complétion</th>
             <th scope="col">Utilisateur</th>
             <th scope="col">Fréquence</th>
             <th scope="col">Difficulté</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
-            {% for task in tasks %}
-                <tr>
-                    <th scope="row">{{ task.room.name }}</th>
-                    <td>{{ task.name }}</td>
-                    <td>{{ task.lastDone }}</td>
-                    <td>{{ task.lastDoneBy }}</td>
-                    <td>{{ task.frequency }}</td>
-                    <td>
-                        {{ task.difficulty }}
-                    </td>
-                </tr>
-            {%endfor %}
+        {% set current_date = "now" | date("d/m/Y") %}
+        {% for task in tasks %}
+            <tr>
+                <td>
+                    <div class="form-check">
+                        <a href="{{ path('update_task', { 'task_id': task.id }) }}">
+                            <input class="form-check-input" type="checkbox" {% if task.lastDone is not null and task.lastDone | date("d/m/Y") == current_date %} checked {% endif %}>
+                        </a>
+                    </div>
+                </td>
+                <th scope="row">{{ task.room.name }}</th>
+                <td>{{ task.name }}</td>
+                <td>{% if task.lastDone is not null %} {{ task.lastDone | date("d/m/Y") }} {% endif %}</td>
+                <td>{% if task.lastDoneBy is not null %} {{ task.lastDoneBy.username }} {% endif %}</td>
+                <td>{{ task.frequency }}</td>
+                <td>
+                    {% for i in 1..task.difficulty %}
+                        <i class="bi bi-star-fill"></i>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ path('update_task', { 'task_id': task.id }) }}"><i class="bi bi-pen"></i></a>
+                    <a href="{{ path('remove_task', { 'task_id': task.id }) }}"><i class="bi bi-x"></i></a>
+                </td>
+            </tr>
+        {%endfor %}
         </tbody>
     </table>
 {% endblock %}

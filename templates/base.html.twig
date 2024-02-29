@@ -18,10 +18,38 @@
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="{{ path('homepage') }}">MénageZen!</a>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 1 }) }}">Chambre</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 2 }) }}">Salon</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 3 }) }}#">Cuisine</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 4 }) }}">Entrée</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('list_by_room', { 'roomFilter': 5 }) }}">Salle de bains</a>
+                            </li>
+                        </ul>
+
+                        <a class="btn btn-outline-success" type="button" href="{{ path('update_task') }}">Ajouter une tâche</a>
+                    </div>
                 </div>
             </nav>
 
-            {% block tasks %}{% endblock %}
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-auto">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+
         {% endblock %}
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
